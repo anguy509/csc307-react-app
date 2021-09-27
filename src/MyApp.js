@@ -18,10 +18,6 @@ const characters = [
       name: 'Dennis',
       job: 'Bartender',
     },
-    {
-      name: 'Aiden',
-      job: 'Student'
-    }
 ];
 
 function MyApp() { 
