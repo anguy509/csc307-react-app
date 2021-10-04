@@ -18,9 +18,16 @@ function MyApp() {
     }
   }
 
+  useEffect(() => {
+    fetchAll().then((result) => {
+      if (result) setCharacters(result);
+    });
+  }, []);
+
   async function makePostCall(person) {
     try {
       const response = await axios.post("http://localhost:5000/users", person);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -28,24 +35,30 @@ function MyApp() {
     }
   }
 
-  useEffect(() => {
-    fetchAll().then((result) => {
-      if (result) setCharacters(result);
+  function updateList(person) {
+    makePostCall(person).then((result) => {
+      if (result) setCharacters([...characters, result]);
     });
-  }, []);
+  }
+
+  async function makeDeleteCall(id) {
+    try {
+      const response = await axios.delete("http://localhost:5000/users/" + id)
+      return response
+    } catch (error) {
+      console.log(error);
+      return false
+    }
+  }
 
   function removeOneCharacter (index) {
+    makeDeleteCall(characters[index].id)
     const updated = characters.filter((character, i) => {
         return i !== index
       });
       setCharacters(updated);
-    }
-  
-  function updateList(person) {
-    makePostCall(person).then((result) => {
-      if (result) setCharacters([...characters, person]);
-    });
-  }
+      
+    }  
 
   return ( 
       <div className="container">

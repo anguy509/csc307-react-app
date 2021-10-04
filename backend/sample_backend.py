@@ -68,7 +68,7 @@ def get_users():
       return users
    elif request.method == 'POST':
       userToAdd = request.get_json()
-      userToAdd['id'] = uuid.uuid4()
+      userToAdd['id'] = uuid.uuid4().hex[:6]
       users['users_list'].append(userToAdd)
       resp = jsonify(userToAdd)
       resp.status_code = 201
@@ -85,5 +85,6 @@ def get_user(id):
       for user in users['users_list']:
         if user['id'] == id:
            users['users_list'].remove(user)
-           return jsonify(success=True)
+           return ('', 204)
+      return ('', 404)
    
