@@ -9,7 +9,6 @@ function MyApp() {
   async function fetchAll() {
     try {
       const response = await axios.get("http://localhost:5000/users");
-      console.log(response)
       return response.data.users_list;
     } catch (error) {
       //We're not handling errors. Just logging into the console.
@@ -27,7 +26,6 @@ function MyApp() {
   async function makePostCall(person) {
     try {
       const response = await axios.post("http://localhost:5000/users", person);
-      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -52,12 +50,14 @@ function MyApp() {
   }
 
   function removeOneCharacter (index) {
-    makeDeleteCall(characters[index].id)
-    const updated = characters.filter((character, i) => {
-        return i !== index
-      });
-      setCharacters(updated);
-      
+    makeDeleteCall(characters[index].id).then((result) => {
+      if (result){
+        const updated = characters.filter((character, i) => {
+          return i !== index
+        });
+        setCharacters(updated);
+      }
+    });   
     }  
 
   return ( 
